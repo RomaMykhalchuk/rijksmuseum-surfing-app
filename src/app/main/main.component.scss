@@ -1,0 +1,14 @@
+.main {
+  &__item {
+    margin: 10px;
+  }
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__painting {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+  }
+}

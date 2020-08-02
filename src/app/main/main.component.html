@@ -1,0 +1,31 @@
+<main class="main">
+  <!-- <app-search-field></app-search-field> -->
+  <app-order-by></app-order-by>
+
+  <p>order-by works!</p>
+<select [(ngModel)]="selectedSortType" (ngModelChange)="sortBy()">
+  <!-- <option *ngFor="let type of sortTypes" [ngValue]="type">{{ type }}</option> -->
+    <option value="relevance">Relevance</option>
+    <option value="objecttype">Type of work</option>
+    <option value="chronologic">Chronological old > new</option>
+    <option value="achronologic">Chronological new > old</option>
+    <option value="artist">Artist A > Z</option>
+    <option value="artistdesc">Artist Z > A</option>
+  </select>
+
+  <input type="text" [(ngModel)]="searchQuery" />
+
+  <button (click)="searchArtObject()">Search</button>
+  <h1>{{ searchQuery }}</h1>
+  <h1 *ngIf="!gallery">“No art object could be found by your query”</h1>
+
+  <ul class="main__list">
+    <li class="main__item" *ngFor="let painting of gallery">
+      <img
+        src="{{ painting.headerImage.url }}"
+        class="main__painting"
+        alt="{{ painting.title }}"
+      />
+    </li>
+  </ul>
+</main>
