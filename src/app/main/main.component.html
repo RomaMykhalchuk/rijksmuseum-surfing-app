@@ -3,8 +3,8 @@
   <app-order-by></app-order-by>
 
   <p>order-by works!</p>
-<select [(ngModel)]="selectedSortType" (ngModelChange)="sortBy()">
-  <!-- <option *ngFor="let type of sortTypes" [ngValue]="type">{{ type }}</option> -->
+  <select [(ngModel)]="selectedSortType" (ngModelChange)="sortBy()">
+    <!-- <option *ngFor="let type of sortTypes" [ngValue]="type">{{ type }}</option> -->
     <option value="relevance">Relevance</option>
     <option value="objecttype">Type of work</option>
     <option value="chronologic">Chronological old > new</option>
@@ -17,15 +17,29 @@
 
   <button (click)="searchArtObject()">Search</button>
   <h1>{{ searchQuery }}</h1>
-  <h1 *ngIf="!gallery">“No art object could be found by your query”</h1>
+  <h1 *ngIf="gallery.length === 0">“No art object could be found by your query”</h1>
 
   <ul class="main__list">
-    <li class="main__item" *ngFor="let painting of gallery">
-      <img
-        src="{{ painting.headerImage.url }}"
-        class="main__painting"
-        alt="{{ painting.title }}"
-      />
+    <li
+      (click)="openDialog(painting.objectNumber)"
+      class="main__item"
+      *ngFor="let painting of gallery"
+
+    >
+      <article class="main__art-card">
+        <img
+          src="{{ painting.headerImage.url }}"
+          class="main__painting"
+          alt="{{ painting.title }}"
+        />
+        <p class="main__art-title">{{ painting.longTitle }}</p>
+      </article>
     </li>
   </ul>
+  <select [(ngModel)]="itemsPerPage" (ngModelChange)="setItemsPerPage()">
+    <option value="10">10</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+  </select>
+  <!-- <h1 *ngIf="isTitleShown">HIHIHIHIHI</h1> -->
 </main>

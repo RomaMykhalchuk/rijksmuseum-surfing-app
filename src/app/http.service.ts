@@ -5,10 +5,19 @@ import { HttpClient } from '@angular/common/http';
 
 export class HttpService {
   constructor(private http: HttpClient) { }
-
   getData(...params) {
-    let searchQuery = params[0]||'';
-    let sortType = params[1]||'';
-    return this.http.get(`https://www.rijksmuseum.nl/api/en/collection?key=Jpzm2PAZ&q=${searchQuery}&s=${sortType}`);
+    const searchQuery = params[0]||'';
+    const sortType = params[1]||'';
+    const itemsPerPage = params[2] | 10;
+    const apiKey = "Jpzm2PAZ";
+
+    return this.http.get(`https://www.rijksmuseum.nl/api/en/collection?key=${apiKey}&q=${searchQuery}&s=${sortType}&ps=${itemsPerPage}`);
+  }
+
+  getArtObjDetails(objId:string) {
+    const apiKey = "Jpzm2PAZ";
+
+    return this.http.get(`https://www.rijksmuseum.nl/api/nl/collection/${objId}?key=${apiKey}`);
+
   }
 }

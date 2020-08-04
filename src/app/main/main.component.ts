@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpService } from '../http.service';
+import { HttpService } from '../http.service';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-main',
@@ -9,23 +11,49 @@ import {HttpService } from '../http.service';
 })
 export class MainComponent implements OnInit {
 
-  gallery: Object;
-  searchQuery:string;
-  selectedSortType:string;
+  gallery: any;
+  searchQuery: string;
+  selectedSortType: string;
+  itemsPerPage: number;
 
-  constructor(private httpService: HttpService){}
+  constructor(private httpService: HttpService, private dialog: MatDialog) { }
 
-  ngOnInit(): void {
-    this.httpService.getData().subscribe((data: any) => this.gallery = data.artObjects);
+  openDialog(id) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '700px';
+    dialogConfig.height = '700px';
+     
+    dialogConfig.data = id;
+
+
+    this.dialog.open(DialogComponent, dialogConfig);
+  }
+
+  ngOnInit() {
+    this.fetch();
+
   }
 
   searchArtObject() {
-    console.log(this.gallery);
-    this.httpService.getData(this.searchQuery).subscribe((data: any) => this.gallery = data.artObjects);
+
+    this.fetch(this.searchQuery);
   }
 
   sortBy() {
-    this.httpService.getData(this.searchQuery, this.selectedSortType).subscribe((data: any) => this.gallery = data.artObjects);
+    this.fetch(this.searchQuery, this.selectedSortType);
   }
+
+  setItemsPerPage() {
+    this.fetch(this.searchQuery, this.selectedSortType, this.itemsPerPage);
+  }
+
+  fetch(query?: string, sortType?: string, amount?: number) {
+
+  this.httpService.getData(query, sortType, amount).subscribe((data: any) => this.gallery = data.artObjects)
+
+}
 
 }
