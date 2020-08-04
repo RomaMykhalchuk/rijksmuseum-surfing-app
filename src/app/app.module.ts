@@ -13,6 +13,8 @@ import { OrderByComponent } from './order-by/order-by.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from './dialog/dialog.component';
 import { DetailedObjectComponent } from './detailed-object/detailed-object.component';
+import { JwPaginationModule } from 'jw-angular-pagination';
+
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { DetailedObjectComponent } from './detailed-object/detailed-object.compo
     OrderByComponent,
     DialogComponent,
     DetailedObjectComponent,
+    JwPaginationModule
 ],
   imports: [
     BrowserModule,
@@ -32,7 +35,7 @@ import { DetailedObjectComponent } from './detailed-object/detailed-object.compo
     MatDialogModule,
 
   ],
- 
+
   providers: [],
   bootstrap: [AppComponent],
   entryComponents:[DialogComponent]
