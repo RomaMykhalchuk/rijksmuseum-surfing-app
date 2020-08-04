@@ -12,6 +12,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
 import { OrderByComponent } from './order-by/order-by.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from './dialog/dialog.component';
+import { DetailedObjectComponent } from './detailed-object/detailed-object.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { DialogComponent } from './dialog/dialog.component';
     SearchFieldComponent,
     OrderByComponent,
     DialogComponent,
+    DetailedObjectComponent,
 ],
   imports: [
     BrowserModule,
@@ -27,8 +29,10 @@ import { DialogComponent } from './dialog/dialog.component';
     HttpClientModule,
     FormsModule,
     NoopAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+
   ],
+ 
   providers: [],
   bootstrap: [AppComponent],
   entryComponents:[DialogComponent]
