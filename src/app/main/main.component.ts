@@ -3,6 +3,7 @@ import { HttpService } from '../http.service';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { DialogComponent } from '../dialog/dialog.component';
 
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -25,7 +26,7 @@ export class MainComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '700px';
     dialogConfig.height = '700px';
-     
+
     dialogConfig.data = id;
 
 
