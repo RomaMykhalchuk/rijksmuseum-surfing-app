@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { MatChipsModule} from '@angular/material/chips';
+import { MatBadgeModule } from '@angular/material/badge';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,8 +15,6 @@ import { OrderByComponent } from './order-by/order-by.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from './dialog/dialog.component';
 import { DetailedObjectComponent } from './detailed-object/detailed-object.component';
-import { JwPaginationModule } from 'jw-angular-pagination';
-
 
 @NgModule({
   declarations: [
@@ -24,7 +24,6 @@ import { JwPaginationModule } from 'jw-angular-pagination';
     OrderByComponent,
     DialogComponent,
     DetailedObjectComponent,
-    JwPaginationModule
 ],
   imports: [
     BrowserModule,
@@ -33,9 +32,10 @@ import { JwPaginationModule } from 'jw-angular-pagination';
     FormsModule,
     NoopAnimationsModule,
     MatDialogModule,
-
+    NgxPaginationModule,
+    MatChipsModule,
+    MatBadgeModule
   ],
-
   providers: [],
   bootstrap: [AppComponent],
   entryComponents:[DialogComponent]

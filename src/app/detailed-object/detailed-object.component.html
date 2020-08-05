@@ -1,9 +1,18 @@
 <h1>detailed-object works!</h1>
 
-<img src={{detailedObj.artObject.webImage.url}} alt={{detailedObj.artObject.title}}>
-<h2>{{detailedObj.artObject.title}}</h2>
-<p>{{detailedObj.artObject.description}}</p>
-<h3>{{detailedObj.artObject.principalMaker}}</h3>
-<a *ngFor="let type of detailedObj.artObject.objectTypes" (click)='goTo($event)'>{{type}}</a>
-<a *ngFor="let tag of detailedObj.artObjectPage.tags">{{tag}}</a>
+<img
+  src="{{ detailedObj.artObject.webImage.url }}"
+  alt="{{ detailedObj.artObject.title }}"
+/>
+<h2>{{ detailedObj.artObject.title }}</h2>
+<p>{{ detailedObj.artObject.description }}</p>
+<h3>{{ detailedObj.artObject.principalMaker }}</h3>
 
+<mat-chip-list aria-label="Fish selection">
+  <mat-chip
+    *ngFor="let type of detailedObj.artObject.objectTypes"
+    color="accent"
+    (click)="goTo($event)"
+    >{{ type }}</mat-chip
+  >
+</mat-chip-list>

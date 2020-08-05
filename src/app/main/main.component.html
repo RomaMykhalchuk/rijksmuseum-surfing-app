@@ -1,11 +1,6 @@
 <main class="main">
-  <!-- <app-search-field></app-search-field> -->
-  <app-order-by></app-order-by>
-
-  <p>order-by works!</p>
-<button>HOME</button>
+  <button (click)="goTo()">HOME</button>
   <select [(ngModel)]="selectedSortType" (ngModelChange)="sortBy()">
-    <!-- <option *ngFor="let type of sortTypes" [ngValue]="type">{{ type }}</option> -->
     <option value="relevance">Relevance</option>
     <option value="objecttype">Type of work</option>
     <option value="chronologic">Chronological old > new</option>
@@ -16,16 +11,35 @@
 
   <input type="text" [(ngModel)]="searchQuery" />
 
+  <button
+    mat-raised-button
+    color="primary"
+    matBadge={{favorites.length}}
+    matBadgePosition="before"
+    matBadgeColor="accent"
+  >
+    Favorites
+  </button>
+
   <button (click)="searchArtObject()">Search</button>
   <h1>{{ searchQuery }}</h1>
-  <h1 *ngIf="gallery.length === 0">“No art object could be found by your query”</h1>
+  <h1 *ngIf="gallery.length === 0">
+    “No art object could be found by your query”
+  </h1>
 
   <ul class="main__list">
     <li
       (click)="openDialog(painting.objectNumber)"
       class="main__item"
-      *ngFor="let painting of gallery"
-
+      *ngFor="
+        let painting of gallery
+          | paginate
+            : {
+                itemsPerPage: itemsPerPage,
+                currentPage: p,
+                totalItems: gallery.length
+              }
+      "
     >
       <article class="main__art-card">
         <img
@@ -37,10 +51,12 @@
       </article>
     </li>
   </ul>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
   <select [(ngModel)]="itemsPerPage" (ngModelChange)="setItemsPerPage()">
     <option value="10">10</option>
+    <option value="25">25</option>
     <option value="50">50</option>
     <option value="100">100</option>
   </select>
 </main>
-

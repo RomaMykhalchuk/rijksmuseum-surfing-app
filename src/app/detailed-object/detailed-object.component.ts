@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
+
 import { HttpService } from '../http.service';
 import { Router } from '@angular/router';
 
@@ -24,5 +25,4 @@ export class DetailedObjectComponent implements OnInit {
   goTo(objType) {
     this.router.navigate([`/${objType.target.innerText}`]);
   }
-
 }

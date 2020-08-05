@@ -17,21 +17,31 @@ export class MainComponent implements OnInit {
   searchQuery: string;
   selectedSortType: string;
   itemsPerPage: number;
+  p: number = 1;
   selectedObjectType: string;
+  total:number;
+
+  favorites = [1,2,3];
 
   constructor(private httpService: HttpService, private dialog: MatDialog,
     private activateRoute: ActivatedRoute, private router: Router) {
     this.selectedObjectType = activateRoute.snapshot.params['type'];
   }
 
-  openDialog(id) {
+  openDialog(id:string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '700px';
     dialogConfig.height = '700px';
     dialogConfig.data = id;
-    this.dialog.open(DialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
+
+
+
+    dialogRef.afterClosed().subscribe(
+         data => this.favorites.push(1)
+   );
   }
 
   ngOnInit() {
@@ -51,12 +61,15 @@ export class MainComponent implements OnInit {
   }
 
   fetchData(query?: string, sortType?: string, amount?: number, type?: string) {
-    this.httpService.getData(query, sortType, amount, type).subscribe((data: any) => this.gallery = data.artObjects)
+    this.httpService.getData(query, sortType, amount, type).subscribe((data: any) => {
+      this.gallery = data.artObjects;
+
+    })
   }
 
   goTo() {
     this.router.navigate(['']);
   }
 
-  
+
 }
