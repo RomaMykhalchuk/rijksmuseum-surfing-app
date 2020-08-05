@@ -51,7 +51,11 @@
       </article>
     </li>
   </ul>
+
+  
   <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+
 
   <select [(ngModel)]="itemsPerPage" (ngModelChange)="setItemsPerPage()">
     <option value="10">10</option>

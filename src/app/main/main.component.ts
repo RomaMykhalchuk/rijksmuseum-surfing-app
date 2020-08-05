@@ -37,10 +37,8 @@ export class MainComponent implements OnInit {
     dialogConfig.data = id;
     const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
 
-
-
     dialogRef.afterClosed().subscribe(
-         data => this.favorites.push(1)
+         data => this.favorites.push(data)
    );
   }
 

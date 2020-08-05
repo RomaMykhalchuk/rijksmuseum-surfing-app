@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class DialogComponent implements OnInit {
   @Output() onChanged = new EventEmitter<any>();
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private httpService: HttpService,
-  private router: Router,private dialogRef: MatDialogRef<DialogComponent>
+    private router: Router, private dialogRef: MatDialogRef<DialogComponent>
   ) {
     this.id = data;
   }
@@ -27,9 +27,9 @@ export class DialogComponent implements OnInit {
   seeDetails() {
     this.dialogRef.close();
     this.router.navigate([`details/${this.id}`]);
-}
+  }
 
-addToFavorites() {
-  this.dialogRef.close(this.artObj);
-}
+  addToFavorites() {
+    this.dialogRef.close(this.artObj);
+  }
 }
