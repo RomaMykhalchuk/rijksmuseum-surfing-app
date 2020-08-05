@@ -14,9 +14,10 @@
   <button
     mat-raised-button
     color="primary"
-    matBadge={{favorites.length}}
+    matBadge="{{ favorites.length }}"
     matBadgePosition="before"
     matBadgeColor="accent"
+    (click)='setFavoritesMode()'
   >
     Favorites
   </button>
@@ -27,12 +28,36 @@
     “No art object could be found by your query”
   </h1>
 
-  <ul class="main__list">
+  <ul class="main__list" *ngIf="!isFavoriteMode">
+    <li
+      (click)="openDialog(painting.objectNumber)"
+      class="main__item"
+      *ngFor="let painting of gallery
+          | paginate
+            : {
+                itemsPerPage: itemsPerPage,
+                currentPage: currentPage,
+                totalItems: total / itemsPerPage
+              }
+      "
+    >
+      <article class="main__art-card">
+        <img
+          src="{{ painting.headerImage.url }}"
+          class="main__painting"
+          alt="{{ painting.title }}"
+        />
+        <p class="main__art-title">{{ painting.longTitle }}</p>
+      </article>
+    </li>
+  </ul>
+<pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+<!-- <ul class="main__list" *ngIf='isFavoriteMode'>
     <li
       (click)="openDialog(painting.objectNumber)"
       class="main__item"
       *ngFor="
-        let painting of gallery
+        let painting of favorites
           | paginate
             : {
                 itemsPerPage: itemsPerPage,
@@ -50,13 +75,11 @@
         <p class="main__art-title">{{ painting.longTitle }}</p>
       </article>
     </li>
-  </ul>
-
-  
-  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </ul> -->
 
 
 
+  <p *ngFor='let i of favorites'>{{i.title}}</p>
   <select [(ngModel)]="itemsPerPage" (ngModelChange)="setItemsPerPage()">
     <option value="10">10</option>
     <option value="25">25</option>

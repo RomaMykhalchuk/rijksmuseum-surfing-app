@@ -30,6 +30,8 @@ export class DialogComponent implements OnInit {
   }
 
   addToFavorites() {
-    this.dialogRef.close(this.artObj);
+    const {artObject} = this.artObj;
+    console.log(artObject);
+    this.dialogRef.close(artObject);
   }
 }

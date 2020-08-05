@@ -12,16 +12,15 @@ import { Router } from '@angular/router';
   providers: [HttpService],
 })
 export class MainComponent implements OnInit {
-
   gallery: any;
   searchQuery: string;
   selectedSortType: string;
-  itemsPerPage: number;
-  p: number = 1;
+  itemsPerPage: number = 10;
+  currentPage: number = 1;
   selectedObjectType: string;
   total:number;
-
-  favorites = [1,2,3];
+  isFavoriteMode: boolean = false;
+  favorites = [];
 
   constructor(private httpService: HttpService, private dialog: MatDialog,
     private activateRoute: ActivatedRoute, private router: Router) {
@@ -58,8 +57,9 @@ export class MainComponent implements OnInit {
     this.fetchData(this.searchQuery, this.selectedSortType, this.itemsPerPage);
   }
 
-  fetchData(query?: string, sortType?: string, amount?: number, type?: string) {
-    this.httpService.getData(query, sortType, amount, type).subscribe((data: any) => {
+  fetchData(query?: string, sortType?: string, amount?: number, type?: string, currentPage?: number) {
+    this.httpService.getData(query, sortType, amount, type, currentPage).subscribe((data: any) => {
+      this.total = data.count;
       this.gallery = data.artObjects;
 
     })
@@ -69,5 +69,15 @@ export class MainComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  setFavoritesMode() {
+    this.isFavoriteMode = !this.isFavoriteMode;
+    console.log(this.isFavoriteMode);
+  }
+
+  handlePageChange(event) {
+    console.log(event);
+    this.currentPage = event;
+    this.fetchData(this.searchQuery, this.selectedSortType, this.itemsPerPage, this.selectedObjectType, event );
+  }
 
 }
