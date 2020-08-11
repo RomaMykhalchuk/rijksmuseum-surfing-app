@@ -5,6 +5,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
+import  {ArtObject} from  '../../interfaces/artObject';
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -12,13 +14,13 @@ import { Router } from '@angular/router';
   providers: [HttpService],
 })
 export class MainComponent implements OnInit {
-  gallery: any;
+  gallery: ArtObject[] = [];
   searchQuery: string;
   selectedSortType: string;
   itemsPerPage: number = 10;
   currentPage: number = 1;
-  selectedObjectType: string;
-  total:number;
+  selectedObjectType: string = '';
+  total: number;
   isFavoriteMode: boolean = false;
   favorites = [];
 
@@ -27,7 +29,7 @@ export class MainComponent implements OnInit {
     this.selectedObjectType = activateRoute.snapshot.params['type'];
   }
 
-  openDialog(id:string) {
+  openDialog(id: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -37,16 +39,37 @@ export class MainComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
-         data => this.favorites.push(data)
-   );
+      data => {
+        console.log(data);
+        if (data === '') {
+          return;
+        } else if (!this.favorites.some(obj => obj.objectNumber === data.objectNumber)) {
+          this.favorites.push(data);
+          const favoriteData = JSON.parse(localStorage.getItem('favorites') || '[]');
+          favoriteData.push(data);
+          localStorage.setItem('favorites', JSON.stringify(favoriteData));
+        } else {
+          alert('already added');
+        }
+      }
+    );
   }
 
   ngOnInit() {
+    if (!localStorage.getItem('favorites')) {
+      localStorage.setItem('favorites', '[]');
+    }
+    const favData = localStorage.getItem('favorites');
+    this.favorites = JSON.parse(favData);
     this.fetchData(this.selectedObjectType);
   }
 
   searchArtObject() {
+    if (this.searchQuery.length > 0) {
     this.fetchData(this.searchQuery);
+  } else {
+    alert("Search query shouldn't be empty");
+  }
   }
 
   sortBy() {
@@ -61,7 +84,6 @@ export class MainComponent implements OnInit {
     this.httpService.getData(query, sortType, amount, type, currentPage).subscribe((data: any) => {
       this.total = data.count;
       this.gallery = data.artObjects;
-
     })
   }
 
@@ -77,7 +99,6 @@ export class MainComponent implements OnInit {
   handlePageChange(event) {
     console.log(event);
     this.currentPage = event;
-    this.fetchData(this.searchQuery, this.selectedSortType, this.itemsPerPage, this.selectedObjectType, event );
+    this.fetchData(this.searchQuery, this.selectedSortType, this.itemsPerPage, this.selectedObjectType, event);
   }
-
 }
