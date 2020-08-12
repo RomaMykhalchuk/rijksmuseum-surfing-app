@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from '../http.service';
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { DialogComponent } from '../dialog/dialog.component';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
-import  {ArtObject} from  '../../interfaces/artObject';
+import { HttpService } from '../http.service';
+import { DialogComponent } from '../dialog/dialog.component';
+import { ArtObject } from '../../interfaces/artObject';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-main',
@@ -13,23 +13,27 @@ import  {ArtObject} from  '../../interfaces/artObject';
   styleUrls: ['./main.component.scss'],
   providers: [HttpService],
 })
+
 export class MainComponent implements OnInit {
   gallery: ArtObject[] = [];
-  searchQuery: string = '';
+  searchQuery = '';
   selectedSortType: string;
-  itemsPerPage: number = 10;
-  currentPage: number = 1;
-  selectedObjectType: string = '';
+  itemsPerPage = 10;
+  currentPage = 1;
+  selectedObjectType = '';
   totalInGallery: number;
-  isFavoriteMode: boolean = false;
+  isFavoriteMode = false;
   favorites = [];
 
-  constructor(private httpService: HttpService, private dialog: MatDialog,
-    private activateRoute: ActivatedRoute, private router: Router) {
-    this.selectedObjectType = activateRoute.snapshot.params['type'];
+  constructor(
+    private httpService: HttpService,
+    private dialog: MatDialog,
+    private activateRoute: ActivatedRoute,
+    private router: Router) {
+    this.selectedObjectType = activateRoute.snapshot.params.type;
   }
 
-  openDialog(id: string) {
+  openDialog(id: string): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -40,7 +44,6 @@ export class MainComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       data => {
-        console.log(data);
         if (data === '') {
           return;
         } else if (!this.favorites.some(obj => obj.objectNumber === data.objectNumber)) {
@@ -49,13 +52,13 @@ export class MainComponent implements OnInit {
           favoriteData.push(data);
           localStorage.setItem('favorites', JSON.stringify(favoriteData));
         } else {
-          alert('already added');
+          alert('This art object was already added to favorites');
         }
       }
     );
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!localStorage.getItem('favorites')) {
       localStorage.setItem('favorites', '[]');
     }
@@ -64,41 +67,43 @@ export class MainComponent implements OnInit {
     this.fetchData(this.selectedObjectType);
   }
 
-  searchArtObject() {
+  searchArtObject(): void {
     if (this.searchQuery.length > 0) {
-    this.fetchData(this.searchQuery);
-    this.searchQuery = '';
-  } else {
-    alert("Search query shouldn't be empty");
-  }
+      this.fetchData(this.searchQuery);
+      this.searchQuery = '';
+    } else {
+      alert('Search query shouldn"t be empty');
+    }
   }
 
-  sortBy() {
+  sortBy(): void {
     this.fetchData(this.searchQuery, this.selectedSortType);
   }
 
-  setItemsPerPage() {
+  setItemsPerPage(): void {
     this.fetchData(this.searchQuery, this.selectedSortType, this.itemsPerPage);
   }
 
-  fetchData(query?: string, sortType?: string, amount?: number, type?: string, currentPage?: number) {
-    this.httpService.getData(query, sortType, amount, type, currentPage).subscribe((data: any) => {
-      this.totalInGallery = data.count;
-      this.gallery = data.artObjects;
-    })
+  fetchData(query?: string, sortType?: string, amount?: number, type?: string, currentPage?: number): void {
+    this.httpService
+      .getData(query, sortType, amount, type, currentPage)
+      .subscribe(
+        (data: any) => {
+          this.totalInGallery = data.count;
+          this.gallery = data.artObjects;
+        },
+        (error: HttpErrorResponse) => alert('Error occured, please try again'));
   }
 
-  goTo() {
+  goTo(): void {
     this.router.navigate(['']);
   }
 
-  setFavoritesMode() {
+  setFavoritesMode(): void {
     this.isFavoriteMode = !this.isFavoriteMode;
-    console.log(this.isFavoriteMode);
   }
 
-  handlePageChange(event) {
-    console.log(event);
+  handlePageChange(event: number): void {
     this.currentPage = event;
     this.fetchData(this.searchQuery, this.selectedSortType, this.itemsPerPage, this.selectedObjectType, event);
   }

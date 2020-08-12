@@ -87,10 +87,6 @@
         </article>
       </li>
     </ul>
-    <pagination-controls
-      *ngIf="gallery.length !== 0 && !isFavoriteMode"
-      (pageChange)="handlePageChange($event)"
-    ></pagination-controls>
   </section>
 
   <section class="main__list--favorites">
@@ -117,7 +113,10 @@
       </li>
     </ul>
   </section>
-
+  <pagination-controls
+    *ngIf="gallery.length !== 0 && !isFavoriteMode"
+    (pageChange)="handlePageChange($event)"
+  ></pagination-controls>
   <div *ngIf="gallery.length !== 0 && !isFavoriteMode">
     <span class="main__field-title">Items per page:</span>
     <select [(ngModel)]="itemsPerPage" (ngModelChange)="setItemsPerPage()">
