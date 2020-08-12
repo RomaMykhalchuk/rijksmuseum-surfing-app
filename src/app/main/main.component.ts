@@ -15,12 +15,12 @@ import  {ArtObject} from  '../../interfaces/artObject';
 })
 export class MainComponent implements OnInit {
   gallery: ArtObject[] = [];
-  searchQuery: string;
+  searchQuery: string = '';
   selectedSortType: string;
   itemsPerPage: number = 10;
   currentPage: number = 1;
   selectedObjectType: string = '';
-  total: number;
+  totalInGallery: number;
   isFavoriteMode: boolean = false;
   favorites = [];
 
@@ -67,6 +67,7 @@ export class MainComponent implements OnInit {
   searchArtObject() {
     if (this.searchQuery.length > 0) {
     this.fetchData(this.searchQuery);
+    this.searchQuery = '';
   } else {
     alert("Search query shouldn't be empty");
   }
@@ -82,7 +83,7 @@ export class MainComponent implements OnInit {
 
   fetchData(query?: string, sortType?: string, amount?: number, type?: string, currentPage?: number) {
     this.httpService.getData(query, sortType, amount, type, currentPage).subscribe((data: any) => {
-      this.total = data.count;
+      this.totalInGallery = data.count;
       this.gallery = data.artObjects;
     })
   }

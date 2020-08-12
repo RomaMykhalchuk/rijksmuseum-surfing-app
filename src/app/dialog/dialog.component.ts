@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { HttpService } from '../http.service';
+import { DetailedArtObject } from '../../interfaces/DetailedArtObject';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,11 +18,11 @@ export class DialogComponent implements OnInit {
     this.id = data;
   }
 
-  artObj: any;
-  id: string;
+  artObj:any='';
+  id: string = '';
 
   ngOnInit() {
-    this.httpService.getArtObjDetails(this.id).subscribe((data: any) => this.artObj = data);
+    this.httpService.getArtObjDetails(this.id).subscribe((data: DetailedArtObject) => this.artObj = data);
   }
 
   seeDetails() {
@@ -30,8 +31,7 @@ export class DialogComponent implements OnInit {
   }
 
   addToFavorites() {
-    const {artObject} = this.artObj;
-    console.log(artObject);
+    const { artObject } = this.artObj;
     this.dialogRef.close(artObject);
   }
 }

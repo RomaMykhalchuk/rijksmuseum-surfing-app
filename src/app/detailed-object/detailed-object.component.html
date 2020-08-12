@@ -1,16 +1,27 @@
-<img
-  src="{{ detailedObj.artObject.webImage.url }}"
-  alt="{{ detailedObj.artObject.title }}"
-/>
-<h2>{{ detailedObj.artObject.title }}</h2>
-<p>{{ detailedObj.artObject.description }}</p>
-<h3>{{ detailedObj.artObject.principalMaker }}</h3>
+<section class="details">
+  <button
+    mat-button
+    class="mat-raised-button mat-primary details__button"
+    (click)='navigateHome()'>
+    Home
+  </button>
+  <img
+    class="details__image"
+    src="{{ detailedObj.artObject.webImage.url }}"
+    alt="{{ detailedObj.artObject.title }}"
+  />
+  <h2 class="details__title">{{ detailedObj.artObject.title }}</h2>
+  <p class="details__description">{{ detailedObj.artObject.description }}</p>
+  <h3 class="details__maker">
+    Principal maker: {{ detailedObj.artObject.principalMaker }}
+  </h3>
 
-<mat-chip-list aria-label="Fish selection">
-  <mat-chip
-    *ngFor="let type of detailedObj.artObject.objectTypes"
-    color="accent"
-    (click)="goTo($event)"
-    >{{ type }}</mat-chip
-  >
-</mat-chip-list>
+  <mat-chip-list aria-label="Fish selection">
+    <mat-chip
+      *ngFor="let type of detailedObj.artObject.objectTypes"
+      color="accent"
+      (click)="lookForRelatedTags($event)"
+      >{{ type }}</mat-chip
+    >
+  </mat-chip-list>
+</section>

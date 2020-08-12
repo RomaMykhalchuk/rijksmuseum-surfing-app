@@ -1,0 +1,10 @@
+.details {
+  padding: 20px;
+  overflow: hidden;
+  &__image {
+    width: 100vw;
+  }
+  &__button {
+    margin-bottom: 20px;
+  }
+}

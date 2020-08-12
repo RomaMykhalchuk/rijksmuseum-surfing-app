@@ -27,90 +27,104 @@
       </li>
     </ul>
   </nav>
-  
-  <span>Sort By:</span>
-  <select [(ngModel)]="selectedSortType" (ngModelChange)="sortBy()">
-    <option value="relevance">Relevance</option>
-    <option value="objecttype">Type of work</option>
-    <option value="chronologic">Chronological old > new</option>
-    <option value="achronologic">Chronological new > old</option>
-    <option value="artist">Artist A > Z</option>
-    <option value="artistdesc">Artist Z > A</option>
-  </select>
 
-  <input
-    type="text"
-    [(ngModel)]="searchQuery"
-    placeholder="Search keyword..."
-  />
-
-  <button mat-raised-button (click)="searchArtObject()">
-    Search
-  </button>
-
-  <h1 *ngIf="gallery.length === 0">
-    “No art object could be found by your query”
-  </h1>
-
-  <ul class="main__list" *ngIf="!isFavoriteMode">
-    <li
-      (click)="openDialog(painting.objectNumber)"
-      class="main__item"
-      *ngFor="
-        let painting of gallery
-          | paginate
-            : {
-                itemsPerPage: itemsPerPage,
-                currentPage: currentPage,
-                totalItems: total / itemsPerPage
-              }
-      "
+  <section class="main__control-section">
+    <span class="main__field-title">Sort By:</span>
+    <select
+      class="main__selector"
+      [(ngModel)]="selectedSortType"
+      (ngModelChange)="sortBy()"
     >
-      <article class="main__art-card">
-        <img
-          src="{{ painting.headerImage.url }}"
-          class="main__painting"
-          alt="{{ painting.title }}"
-        />
-        <p class="main__art-title">{{ painting.longTitle }}</p>
-      </article>
-    </li>
-  </ul>
-  <pagination-controls
-    (pageChange)="handlePageChange($event)"
-  ></pagination-controls>
-  <h1 *ngIf="isFavoriteMode && favorites.length === 0">
-    No favorite items yet
-  </h1>
-  <ul class="main__list" *ngIf="isFavoriteMode">
-    <li
-      (click)="openDialog(painting.objectNumber)"
-      class="main__item"
-      *ngFor="
-        let painting of favorites
-          | paginate
-            : {
-                itemsPerPage: itemsPerPage,
-                currentPage: currentPage,
-                totalItems: gallery.length
-              }
-      "
+      <option value="relevance">Relevance</option>
+      <option value="objecttype">Type of work</option>
+      <option value="chronologic">Chronological old > new</option>
+      <option value="achronologic">Chronological new > old</option>
+      <option value="artist">Artist A > Z</option>
+      <option value="artistdesc">Artist Z > A</option>
+    </select>
+
+    <input
+      type="text"
+      class="main__search-field"
+      [(ngModel)]="searchQuery"
+      placeholder="Search keyword..."
+    />
+
+    <button
+      class="main__search-btn"
+      mat-raised-button
+      (click)="searchArtObject()"
     >
-      <article class="main__art-card">
-        <img
-          src="{{ painting.webImage.url }}"
-          class="main__painting"
-          alt="{{ painting.title }}"
-        />
-        <p class="main__art-title">{{ painting.longTitle }}</p>
-      </article>
-    </li>
-  </ul>
-  <span>Items per page</span>
-  <select [(ngModel)]="itemsPerPage" (ngModelChange)="setItemsPerPage()">
-    <option value="10">10</option>
-    <option value="25">25</option>
-    <option value="50">50</option>
-    <option value="100">100</option>
-  </select>
+      Search
+    </button>
+  </section>
+
+  <section class="main__list">
+    <h1 *ngIf="gallery.length === 0" class="main__empty-page">
+      “No art object could be found by your query”
+    </h1>
+    <ul class="main__list" *ngIf="!isFavoriteMode">
+      <li
+        (click)="openDialog(painting.objectNumber)"
+        class="main__item"
+        *ngFor="
+          let painting of gallery
+            | paginate
+              : {
+                  itemsPerPage: itemsPerPage,
+                  currentPage: currentPage,
+                  totalItems: totalInGallery / itemsPerPage
+                }
+        "
+      >
+        <article class="main__art-card">
+          <img
+            src="{{ painting.headerImage.url }}"
+            class="main__painting"
+            alt="{{ painting.title }}"
+          />
+          <p class="main__art-title">{{ painting.longTitle }}</p>
+        </article>
+      </li>
+    </ul>
+    <pagination-controls
+      *ngIf="gallery.length !== 0 && !isFavoriteMode"
+      (pageChange)="handlePageChange($event)"
+    ></pagination-controls>
+  </section>
+
+  <section class="main__list--favorites">
+    <h1
+      *ngIf="isFavoriteMode && favorites.length === 0"
+      class="main__empty-page"
+    >
+      No favorite items yet
+    </h1>
+    <ul class="main__list" *ngIf="isFavoriteMode">
+      <li
+        (click)="openDialog(painting.objectNumber)"
+        class="main__item"
+        *ngFor="let painting of favorites"
+      >
+        <article class="main__art-card">
+          <img
+            src="{{ painting.webImage.url }}"
+            class="main__painting"
+            alt="{{ painting.title }}"
+          />
+          <p class="main__art-title">{{ painting.longTitle }}</p>
+        </article>
+      </li>
+    </ul>
+  </section>
+
+  <div *ngIf="gallery.length !== 0 && !isFavoriteMode">
+    <span class="main__field-title">Items per page:</span>
+    <select [(ngModel)]="itemsPerPage" (ngModelChange)="setItemsPerPage()">
+      <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+  </div>
 </main>
