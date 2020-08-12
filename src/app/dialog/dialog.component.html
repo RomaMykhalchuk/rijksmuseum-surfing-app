@@ -1,0 +1,21 @@
+<h2 class="dialog__title">{{ artObj.artObject.title }}</h2>
+
+<mat-dialog-content>{{ artObj.artObject.description }}</mat-dialog-content>
+<img
+  class="dialog__image"
+  src="{{ artObj.artObject.webImage.url }}"
+  alt="{{ artObj.artObject.title }}"
+/>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close class="mat-raised-button">Close</button>
+  <button
+    mat-button
+    class="mat-raised-button mat-primary"
+    (click)="seeDetails()"
+  >
+    View More Details
+  </button>
+  <button mat-button color="primary" (click)="addToFavorites()">
+    Add to favorites
+  </button>
+</mat-dialog-actions>
